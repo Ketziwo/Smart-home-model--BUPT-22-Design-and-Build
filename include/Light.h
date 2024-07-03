@@ -8,6 +8,6 @@ const unsigned int DIO_PIN = 8; // 定义 DIO 引脚
 const unsigned int LIGHT_PIN = A2; // 定义光敏器件引脚
 
 void initLight();
-void displayLight();
+void displayLight(int);
 
 #endif //LIGHT_H

@@ -26,8 +26,9 @@ int command(String command) {
             door->setState(0);
             return 1;
         }
-        if (command.equals("on" + password)) {
+        if (command.equals("on " + password)) {
             door->setState(1);
+            return 1;
         }
         return 0;
     }

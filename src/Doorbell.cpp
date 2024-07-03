@@ -1,0 +1,16 @@
+#include "Doorbell.h"
+#include <Arduino.h>
+
+void DoorbellInit() {
+    pinMode(BELL_PIN, INPUT); //设置该接口为输入模式
+    pinMode(BEEP_PIN, OUTPUT); //设置该接口为输出模式
+}
+
+void Beep(int time, int freq1, int freq2) {
+    for(int i = 0; i < time/(freq1 + freq2) + 1; ++i) {
+        digitalWrite(BEEP_PIN, LOW);
+        delay(1);
+        digitalWrite(BEEP_PIN, HIGH);
+        delay(1);
+    }
+}

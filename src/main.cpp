@@ -1,11 +1,14 @@
 #include <Arduino.h>
 #include <Bluetooth.h>
 #include <CardReader.h>
+#include <Doorbell.h>
 #include <Humid_Temp.h>
+// #include <Infrared.h>
+#include <Light.h>
 #include <Motor.h>
 #include <OLED.h>
 #include <SoftwareSerial.h>
-SoftwareSerial BT(7, 6);
+// SoftwareSerial BT(7, 6);
 
 // 初始化对象
 Motor *door;
@@ -23,19 +26,25 @@ void setup() {
     fan = new Fan();
     cardReader = new CardReader(); // cardreader对象初始化
     mydht = new myDHT();
-    void initLight();
+    initLight();
+    DoorbellInit();
+    // infInit();
+
+    fan->setAuto(0);
+    fan->setState(0);
+    Beep(1);
 }
 
 void loop() {
     // 接收蓝牙信息并执行命令
     if(Serial.available()) {command(Serial.readString());}
-    if(BT.available()) {
-        String msg = "";
-        while(BT.available()) {
-             msg +=BT.read();
-        }
-        command(msg);
-    }
+    // if(BT.available()) {
+    //     String msg = "";
+    //     while(BT.available()) {
+    //          msg +=BT.read();
+    //     }
+    //     command(msg);
+    // }
 
     // 如果检测到读卡器内容与我的读卡器相同 则开门3秒
     if(myRFID == cardReader->getRFID()) {
@@ -71,10 +80,15 @@ void loop() {
         draw(mydht->humidToString(), 1);
     } while (u8g.nextPage());
 
-    void displayLight();
-    Serial.println(analogRead(A2));
+    displayLight(analogRead(LIGHT_PIN));
+    // Serial.println(analogRead(A2));
 
-    delay(1000);
+    if(digitalRead(BELL_PIN))
+        Beep(200);
+
+    // if(infLoop() == 1) {
+    //     fan->setState(!fan->getState());
+    // }
 }
 
 
