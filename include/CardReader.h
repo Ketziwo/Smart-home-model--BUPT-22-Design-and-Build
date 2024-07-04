@@ -5,9 +5,7 @@
 #define CARDREADER_H
 
 #include <MFRC522.h>
-
-const unsigned int RST_PIN = 5;
-const unsigned int SS_PIN = 53;
+#include <PIN.h>
 
 const String myRFID = "E3 CB 09 2D";
 

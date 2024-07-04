@@ -5,12 +5,10 @@
 #define LIGHT_H
 
 #include <SevenSegmentTM1637.h>
-
-const unsigned int CLK_PIN = 7; // 定义 CLK 引脚
-const unsigned int DIO_PIN = 8; // 定义 DIO 引脚
-const unsigned int LIGHT_PIN = A2; // 定义光敏器件引脚
+#include <PIN.h>
 
 void initLight();
-void displayLight(int);
+void displayNum(int);
+void displayRGB(int change = 0, int R = 1, int G = 1, int B = 1);
 
 #endif //LIGHT_H

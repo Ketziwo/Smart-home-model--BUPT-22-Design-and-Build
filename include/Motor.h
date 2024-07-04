@@ -6,10 +6,7 @@
 
 #include <pins_arduino.h>
 #include <Servo.h>
-
-const int Door_Pin = 11;
-const int Window_Pin = 10;
-const int Fan_Pin = 9;
+#include <PIN.h>
 
 class Motor {
 public:

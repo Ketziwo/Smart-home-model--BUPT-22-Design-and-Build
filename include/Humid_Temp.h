@@ -5,13 +5,9 @@
 #define HUMID_TEMP_H
 
 #include <DHT.h>
+#include <PIN.h>
 
-
-// DHT传感器设置
-const unsigned int DHTPIN = A0; // DHT11数据引脚连接到数字引脚7
 const unsigned int DHTTYPE = DHT11; // DHT11传感器
-
-const unsigned int RAIN_PIN = A1; // 雨滴传感器
 
 class myDHT {
 public:

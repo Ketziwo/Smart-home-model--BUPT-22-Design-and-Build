@@ -9,6 +9,10 @@ void DoorbellInit() {
     pinMode(BEEP_PIN, OUTPUT); //设置该接口为输出模式
 }
 
+int getDoorbell() {
+    return digitalRead(BELL_PIN);
+}
+
 void Beep(int time, int freq1, int freq2) {
     for(int i = 0; i < time/(freq1 + freq2) + 1; ++i) {
         digitalWrite(BEEP_PIN, LOW);

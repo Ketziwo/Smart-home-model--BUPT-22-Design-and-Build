@@ -16,7 +16,7 @@ extern Motor *fan;
 String message = "";
 
 int command(String command) {
-    Serial.println("get message: " + command);
+    Serial.println("recv message: " + command);
     command.trim();
     command.toLowerCase();
 
@@ -90,3 +90,4 @@ int command(String command) {
 String currInfo(){
     return "";
 }
+
