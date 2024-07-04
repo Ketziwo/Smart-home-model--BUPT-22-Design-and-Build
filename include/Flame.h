@@ -8,6 +8,6 @@
 #include <PIN.h>
 
 void flameInit();
-int getFrame();
+int getFlame();
 
 #endif //FLAME_H

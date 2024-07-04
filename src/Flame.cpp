@@ -12,7 +12,7 @@ void flameInit() {
     pinMode(flamePin, INPUT);
 }
 
-int getFrame() {
+int getFlame() {
     // 读取火焰传感器的值
     return digitalRead(flamePin);
 }

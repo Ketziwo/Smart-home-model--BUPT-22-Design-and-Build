@@ -16,8 +16,8 @@ int getDoorbell() {
 void Beep(int time, int freq1, int freq2) {
     for(int i = 0; i < time/(freq1 + freq2) + 1; ++i) {
         digitalWrite(BEEP_PIN, LOW);
-        delay(1);
+        delay(freq1);
         digitalWrite(BEEP_PIN, HIGH);
-        delay(1);
+        delay(freq2);
     }
 }

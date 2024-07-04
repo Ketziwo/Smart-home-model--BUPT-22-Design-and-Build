@@ -9,5 +9,6 @@ const String password = "111";
 
 int command(String command);
 String currInfo();
+void voiceCommand(String s);
 
 #endif //BLUETOOTH_H

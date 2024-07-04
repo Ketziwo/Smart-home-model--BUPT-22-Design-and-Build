@@ -5,6 +5,7 @@
 #include <Bluetooth.h>
 #include <CardReader.h>
 #include <Humid_Temp.h>
+#include <Light.h>
 #include <Motor.h>
 #include <OLED.h>
 
@@ -14,6 +15,7 @@ extern Motor *window;
 extern Motor *fan;
 
 String message = "";
+extern int AutoLight;
 
 int command(String command) {
     Serial.println("recv message: " + command);
@@ -82,6 +84,20 @@ int command(String command) {
 
     else if (command.startsWith("light")){
         command.remove(0,6);
+        if(command.equals("on")) {
+            displayRGB(0, 1, 1, 1);
+            AutoLight = 0;
+            return 1;
+        }
+        if (command.equals("off")) {
+            displayRGB(0, 0, 0, 0);
+            AutoLight = 0;
+            return 1;
+        }
+        if(command.equals("auto")) {
+            AutoLight = 1;
+            return 1;
+        }
     }
     else ;
     return 0;
@@ -90,4 +106,57 @@ int command(String command) {
 String currInfo(){
     return "";
 }
+void voiceCommand(String s) {
+    // 读取接收到的字符
+    char receivedChar = s.charAt(0);
 
+    // 根据接收到的字符执行对应的操作
+    switch (receivedChar) {
+        case 'L':
+            //开灯
+            command("light on");
+            break;
+        case 'l':
+            //关灯
+            command("light off");
+            break;
+        case 'F':
+            //开风扇
+            command("fan on");
+            break;
+        case 'f':
+            //关风扇
+            command("fan off");
+            break;
+        case 'd':
+            //关门
+            command("door off");
+            break;
+        case 'W':
+            //开窗
+            command("window on");
+            break;
+        case 'w':
+            //关窗
+            command("window off");
+            break;
+        case 'a':
+            //自动风扇
+            command("fan auto");
+            break;
+        case 'b':
+            //自动灯光
+            command("light auto");
+            break;
+        case 'c':
+            //自动窗户
+            command("window auto");
+            break;
+        case 'n':
+            //全部自动
+            command("light auto");
+            command("window auto");
+            command("fan auto");
+            break;
+    }
+}

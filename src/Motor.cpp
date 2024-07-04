@@ -32,7 +32,7 @@ void Door::setState(int x) {
             state = 0;
             return;
         case 1:
-            dServo.write(120); // 控制舵机正向旋转
+            dServo.write(110); // 控制舵机正向旋转
             state = 1;
             return;
     }

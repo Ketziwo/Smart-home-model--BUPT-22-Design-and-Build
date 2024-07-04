@@ -20,7 +20,8 @@ extern int AutoLight;
 
 void setup() {
     Serial.begin(9600); // 定义电脑串口波特率
-    Serial2.begin(9600);
+    Serial1.begin(9600);
+    Serial3.begin(9600);
 
     door = new Door();
     window = new Window();
@@ -32,15 +33,19 @@ void setup() {
     flameInit();
     infInit();
 
-    fan->setAuto(0);
-    fan->setState(0);
     Beep(1);
 }
 
 void loop() {
     // 接收蓝牙信息并执行命令
     if(Serial.available()) {command(Serial.readString());}
-    if(Serial2.available()) {command(Serial2.readString());}
+    if(Serial1.available()) {
+        String temp = Serial1.readString();
+        Serial.println(temp);
+        Serial.println("s1 succ");
+        voiceCommand(temp);
+    }
+    if(Serial3.available()) {command(Serial3.readString());}
 
     // 如果检测到读卡器内容与我的读卡器相同 则开门3秒
     if(myRFID == cardReader->getRFID()) {
@@ -76,30 +81,35 @@ void loop() {
         draw(mydht->humidToString(), 1);
     } while (u8g.nextPage());
 
-    displayNum(analogRead(LIGHT_PIN));
-    if (analogRead(LIGHT_PIN) > 800) displayRGB();
+    displayNum(1024 - analogRead(LIGHT_PIN));
+    if (AutoLight == 1) {
+        if(analogRead(LIGHT_PIN) > 800) displayRGB(0, 1, 1, 1);
+        else displayRGB(0, 0, 0, 0);
+    }
 
     if(getDoorbell()) Beep(200, 1, 1);
-    if(getFrame()) Beep(200, 10, 1);
+    if(!getFlame()) Beep(200, 10, 1);
 
     switch(infLoop()) {
         case 1:
-            displayRGB(1);
+            displayRGB(0,1, 1, 1);
+            AutoLight = 0;
             break;
         case 2:
-            fan->setState(!fan->getState());
+            fan->setState(1);
             break;
         case 3:
-            window->setState(!window->getState());
+            window->setState(1);
             break;
         case 4:
-            AutoLight = !AutoLight;
+            displayRGB(0,0, 0, 0);
+            AutoLight = 0;
             break;
         case 5:
-            fan->setAuto(!fan->getAuto());
+            fan->setState(0);
             break;
         case 6:
-            window->setAuto(!window->getAuto());
+            window->setState(0);
             break;
     }
 }
