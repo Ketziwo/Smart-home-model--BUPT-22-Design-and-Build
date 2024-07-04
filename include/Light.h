@@ -1,3 +1,6 @@
+//
+// Created by Ma YiRan on 2024/7/3.
+//
 #ifndef LIGHT_H
 #define LIGHT_H
 
