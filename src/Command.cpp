@@ -14,6 +14,7 @@
 extern Motor *door, *windowKC, *windowWS, *fanCtrl;
 extern Fan* fan;
 extern OLED * scr;
+extern Clock * clock;
 
 String message = "";
 extern int AutoLight;
@@ -298,4 +299,6 @@ void cmdRGB(int x, int id) {
     Serial.println("cmdRGB");
 }
 
-void cmdTime(int hh, int min)
+void cmdTime(int hour, int min){
+    clock->printTime(hour, min);
+}
