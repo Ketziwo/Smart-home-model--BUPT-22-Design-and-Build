@@ -8,39 +8,66 @@
 #include <Servo.h>
 #include <PIN.h>
 
+
 class Motor {
 public:
-    int getState(); // 获取Motor当前的状态
-    int getAuto();
-    virtual void setAuto(int);
-    virtual void setState(int) = 0; // 更新Motor的状态
-protected:
-    int state = 0; // 记录Motor的状态 0为关闭，1为开启
-    int Auto = 0;
-};
-
-
-class Door: public Motor {
-public:
-    Door();
-    void setState(int);
-    void setAuto(int);
+    bool Auto;
+    bool state;
+    Motor(const unsigned int);
+    void open();
+    void close();
+    void angle(const int);
 private:
-    Servo dServo;
+    Servo servo;
 };
 
-class Window: public Motor {
+class Fan {
 public:
-    Window();
-    void setState(int);
+    bool Auto;
+    bool state;
+    Fan(const unsigned int);
+    void open();
+    void close();
 private:
-    Servo wServo;
+    unsigned int pin;
 };
 
-class Fan: public Motor {
-public:
-    Fan();
-    void setState(int);
-};
+// class Motor {
+// public:
+//     int Auto = 0;
+//     int state = 0;
+//     int getState(); // 获取Motor当前的状态
+//     // int getAuto();
+//     void open();
+//     void close();
+//     // virtual void setAuto(int);
+//     virtual void setState(int) = 0; // 更新Motor的状态
+// // protected:
+// //     int state = 0; // 记录Motor的状态 0为关闭，1为开启
+// };
+
+
+// class Door: public Motor {
+// public:
+//     Door(const unsigned int pin);
+//     void setState(int);
+//     void setAuto(int);
+// private:
+//     Servo dServo;
+// };
+
+// class Window: public Motor {
+// public:
+//     Window(const unsigned int pin);
+//     void setState(int);
+// private:
+//     Servo wServo;
+// };
+
+// class Fan: public Motor {
+// public:
+//     Fan();
+//     void setState(int);
+// };
 
 #endif //MOTOR_H

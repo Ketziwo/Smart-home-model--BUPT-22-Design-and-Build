@@ -7,7 +7,13 @@
 #include <IRremote.h> // 引入红外解码库
 #include <PIN.h>
 
-void infInit();
-int infLoop();
+class Infrared {
+public:
+    Infrared();
+    char get();
+private:
+    IRrecv *irrecv;
+    decode_results results;
+};
 
 #endif //INFRARED_H

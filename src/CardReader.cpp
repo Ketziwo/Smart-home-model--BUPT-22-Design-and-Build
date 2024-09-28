@@ -3,6 +3,8 @@
 //
 #include "CardReader.h"
 
+
+
 CardReader::CardReader() {
     mfrc522 = new MFRC522(SS_PIN, RST_PIN);
     SPI.begin();           // Initiate  SPI bus

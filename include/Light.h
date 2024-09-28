@@ -4,11 +4,22 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 
-#include <SevenSegmentTM1637.h>
 #include <PIN.h>
 
-void initLight();
-void displayNum(int);
-void displayRGB(int change = 0, int R = 1, int G = 1, int B = 1);
+class RGB {
+public:
+    RGB(const unsigned int G_Pin, const unsigned int R_Pin, const unsigned int B_Pin, bool is_Analog);
+    void On();
+    void On(int G, int R, int B);
+    void Off();
+    void Auto();
+    bool get_Auto();
+private:
+    unsigned int G_PIN, R_PIN, B_PIN;
+    bool Is_Analog;
+    bool Is_Auto;
+};
+
+// void displayNum(int);
 
 #endif //LIGHT_H

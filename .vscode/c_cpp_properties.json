@@ -1,0 +1,72 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "C:/Users/Dovep/Mine/CodeFile/PJ Design_N_Build/include",
+                "C:/Users/Dovep/Mine/CodeFile/PJ Design_N_Build/src",
+                "C:/Users/Dovep/Mine/CodeFile/PJ Design_N_Build/lib/MsTimer2-master",
+                "C:/Users/Dovep/Mine/CodeFile/PJ Design_N_Build/lib/Arduino-IRremote-2.5.0/src",
+                "C:/Users/Dovep/Mine/CodeFile/PJ Design_N_Build/lib/U8glib_Arduino-master/src",
+                "C:/Users/Dovep/Mine/CodeFile/PJ Design_N_Build/lib/Servo-master/src",
+                "C:/Users/Dovep/Mine/CodeFile/PJ Design_N_Build/lib/DHT-sensor-library-master",
+                "C:/Users/Dovep/Mine/CodeFile/PJ Design_N_Build/lib/Adafruit_Sensor-master",
+                "C:/Users/Dovep/Mine/CodeFile/PJ Design_N_Build/lib/arduino-tm1637-master/src",
+                "C:/Users/Dovep/Mine/CodeFile/PJ Design_N_Build/lib/MFRC522-master",
+                "C:/Users/Dovep/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "C:/Users/Dovep/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "C:/Users/Dovep/.platformio/packages/framework-arduino-avr/variants/mega",
+                "C:/Users/Dovep/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "C:/Users/Dovep/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                "C:/Users/Dovep/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                "C:/Users/Dovep/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "C:/Users/Dovep/Mine/CodeFile/PJ Design_N_Build/include",
+                    "C:/Users/Dovep/Mine/CodeFile/PJ Design_N_Build/src",
+                    "C:/Users/Dovep/Mine/CodeFile/PJ Design_N_Build/lib/MsTimer2-master",
+                    "C:/Users/Dovep/Mine/CodeFile/PJ Design_N_Build/lib/Arduino-IRremote-2.5.0/src",
+                    "C:/Users/Dovep/Mine/CodeFile/PJ Design_N_Build/lib/U8glib_Arduino-master/src",
+                    "C:/Users/Dovep/Mine/CodeFile/PJ Design_N_Build/lib/Servo-master/src",
+                    "C:/Users/Dovep/Mine/CodeFile/PJ Design_N_Build/lib/DHT-sensor-library-master",
+                    "C:/Users/Dovep/Mine/CodeFile/PJ Design_N_Build/lib/Adafruit_Sensor-master",
+                    "C:/Users/Dovep/Mine/CodeFile/PJ Design_N_Build/lib/arduino-tm1637-master/src",
+                    "C:/Users/Dovep/Mine/CodeFile/PJ Design_N_Build/lib/MFRC522-master",
+                    "C:/Users/Dovep/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "C:/Users/Dovep/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "C:/Users/Dovep/.platformio/packages/framework-arduino-avr/variants/mega",
+                    "C:/Users/Dovep/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "C:/Users/Dovep/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    "C:/Users/Dovep/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    "C:/Users/Dovep/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=60115",
+                "ARDUINO_AVR_MEGA2560",
+                "F_CPU=16000000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "__AVR_ATmega2560__",
+                ""
+            ],
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++11",
+            "compilerPath": "C:/Users/Dovep/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe",
+            "compilerArgs": [
+                "-mmcu=atmega2560",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
