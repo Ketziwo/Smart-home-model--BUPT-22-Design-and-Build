@@ -12,12 +12,10 @@ public:
     void On();
     void On(int G, int R, int B);
     void Off();
-    void Auto();
-    bool get_Auto();
+    bool state;
+    bool Auto;
 private:
     unsigned int G_PIN, R_PIN, B_PIN;
-    bool Is_Analog;
-    bool Is_Auto;
 };
 
 // void displayNum(int);
