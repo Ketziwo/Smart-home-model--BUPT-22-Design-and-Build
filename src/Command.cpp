@@ -43,7 +43,7 @@ int command(String command) {
     // 窗户指令
     // window on 开启
     // window off 关闭
-    else if (command.startsWith("window")) {
+    else if (command.startsWith("window ")) {
         command.remove(0,7);
         bool x;
         // 判断开关
@@ -60,8 +60,8 @@ int command(String command) {
         }
 
         // 对全屋使用
-        if (command.equals("")){
-            cmdWindow(x);
+        if (command.length() == 0){
+            cmdWindow(x, 0);
             return 1;
         }
 
@@ -87,7 +87,7 @@ int command(String command) {
     // 风扇指令
     // fan on 开启
     // fan off 关闭
-    else if (command.startsWith("fan")) {
+    else if (command.startsWith("fan ")) {
         command.remove(0,4);
         bool x;
         // 判断开关
@@ -133,7 +133,7 @@ int command(String command) {
     }
 
     // 灯光控制
-    else if (command.startsWith("light")) {
+    else if (command.startsWith("light ")) {
         command.remove(0,6);
         int x;
 
@@ -188,7 +188,7 @@ int command(String command) {
     }
     
     // 时间控制
-    else if (command.startsWith("time") && (command.length() == 10)) {
+    else if (command.startsWith("time ") && (command.length() == 10)) {
         int hh = (command.charAt(5)-'0')*10 + (command.charAt(6)-'0');
         int mm = (command.charAt(8)-'0')*10 + (command.charAt(9)-'0');
         cmdTime(hh, mm);
@@ -196,7 +196,7 @@ int command(String command) {
     }
     
     // 显示屏信息
-    else if (command.startsWith("show")) {
+    else if (command.startsWith("show ")) {
         if(command.length() > 5 && command.length() <= 25) {
             command.remove(0, 5);
             command.toCharArray(screenmsg, command.length() + 1);
@@ -232,10 +232,12 @@ void cmdDoor(bool x, int time) {
         door->close();
     }
 }
+
 void cmdWindow(bool x, int id) {
     switch(id) {
     case 0:
         cmdWindow(x, 1);
+        delay(500);
         cmdWindow(x, 2);
         break;
     case 1:
@@ -256,6 +258,7 @@ void cmdWindow(bool x, int id) {
         break;
     }
 }
+
 void cmdFan(bool x, int id){
     cyc.fanAngle = -1;
     if(x) {

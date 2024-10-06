@@ -42,8 +42,6 @@ void setup() {
     fanCtrl = new Motor(Fan_CTRL);
     fan = new Fan(Fan_PIN);
     door->close();
-    windowKC->close();
-    windowWS->close();
     fanCtrl->close();
     fan->close();
 
@@ -51,6 +49,7 @@ void setup() {
     clock = new Clock();
     dht = new myDHT();
     scr = new OLED();
+    clock->printTime(23, 59);
     clock->printTime(23, 59);
     scr->print("");
     rgbDin = new RGB(DIN_G_PIN, DIN_R_PIN, DIN_B_PIN, false);
@@ -137,14 +136,28 @@ void loop() {
         }
     }
 
-    // // 火灾传感器，当火灾发生时，打开所有门窗，所有灯光闪烁，蜂鸣器响起
-    // if (getFlame()) {
-    //     Beep(200, 10, 1);
-    //     cmdDoor(true, 0);
-    //     cmdWindow(true);
-    //     cmdRGB(2);
-    //     cmdFan(false);
-    // }
+    // 火灾传感器，当火灾发生时，打开所有门窗，所有灯光闪烁，蜂鸣器响起
+    // Serial.print("getFlame = ");
+    // Serial.println(getFlame());
+    static bool flameFlag = false;
+    if (getFlame() && !flameFlag) {
+        cmdDoor(true, 0);
+        Beep(200, 10, 1);
+        delay(400);
+        Beep(200, 10, 1);
+        cmdWindow(true);
+        cmdRGB(2);
+        cmdFan(false);
+        strcpy(screenmsg, "on Fire!!!!");
+        flameFlag = true;
+    } else if (getFlame()) {
+        Beep(200, 10, 1);
+    } else if (flameFlag){
+        flameFlag = false;
+        strcpy(screenmsg, "");
+        cmdDoor(false);
+        cmdRGB(0);
+    }
 
     /*
     被动技能模块，当有人在家时开启
@@ -155,84 +168,89 @@ void loop() {
         dht->getDHT();
         int humid = dht->getHumidity()*100;
         int temp = dht->getTemperature()*10;
-        int rain = analogRead(RAIN_PIN); // 小于800则关闭窗户
+        int rain = !digitalRead(RAIN_PIN); // 1则关闭窗户
         int light = analogRead(LIGHT_PIN); // 大于800则开灯
 
-        // 风扇自动模式
-        if (fan->Auto == false && ((temp < 300 && fan->state == false) || (temp >= 300 && fan->state == true))) {
-            // 当风扇状态与温度一致时，设置风扇为自动模式
-            fan->Auto = true;
-        } else if (temp >= 300 && fan->state == false && fan->Auto) {
-            cmdFan(true);
-            fan->Auto = true;
-        } else if (temp < 300 && fan->state == true && fan->Auto) {
-            cmdFan(false);
-            fan->Auto = true;
-        }
+        // 传感器自动模块
+        {    
+            // 风扇自动模式
+            if (fan->Auto == false && ((temp < 300 && fan->state == false) || (temp >= 300 && fan->state == true))) {
+                // 当风扇状态与温度一致时，设置风扇为自动模式
+                fan->Auto = true;
+            } else if (temp >= 300 && fan->state == false && fan->Auto) {
+                cmdFan(true);
+                fan->Auto = true;
+            } else if (temp < 300 && fan->state == true && fan->Auto) {
+                cmdFan(false);
+                fan->Auto = true;
+            }
 
-        // 窗户自动模式
-        if (windowKC->Auto == false && ((rain < 800 && windowKC->state == false) || (temp >= 800 && windowKC->state == true))) {
-            // 当厨房窗状态与是否下雨一致时，设置厨房窗为自动模式
-            windowKC->Auto = true;
-        } else if (rain >= 800 && windowKC->state == false && windowKC->Auto) {
-            cmdWindow(true, 1);
-            windowKC->Auto = true;
-        } else if (rain < 800 && windowKC->state == true && windowKC->Auto) {
-            cmdWindow(false, 1);
-            windowKC->Auto = true;
-        }
-        
-        if (windowWS->Auto == false && ((rain < 800 && windowWS->state == false) || (temp >= 800 && windowWS->state == true))) {
-            // 当厕所窗状态与是否下雨一致时，设置厕所窗为自动模式
-            windowWS->Auto = true;
-        } else if (rain >= 800 && windowWS->state == false && windowWS->Auto) {
-            cmdWindow(true, 1);
-            windowWS->Auto = true;
-        } else if (rain < 800 && windowWS->state == true && windowWS->Auto) {
-            cmdWindow(false, 1);
-            windowWS->Auto = true;
-        }
+            // 窗户自动模式
+            if (windowKC->Auto == false && ((rain && windowKC->state == false) || (!rain && windowKC->state == true))) {
+                // 当厨房窗状态与是否下雨一致时，设置厨房窗为自动模式
+                windowKC->Auto = true;
+            } else if (!rain && windowKC->state == false && windowKC->Auto) {
+                cmdWindow(true, 1);
+                delay(400);
+                windowKC->Auto = true;
+            } else if (rain && windowKC->state == true && windowKC->Auto) {
+                cmdWindow(false, 1);
+                delay(400);
+                windowKC->Auto = true;
+            }
+            
+            if (windowWS->Auto == false && ((rain && windowWS->state == false) || (!rain && windowWS->state == true))) {
+                // 当厕所窗状态与是否下雨一致时，设置厕所窗为自动模式
+                windowWS->Auto = true;
+            } else if (!rain && windowWS->state == false && windowWS->Auto) {
+                cmdWindow(true, 2);
+                windowWS->Auto = true;
+            } else if (rain && windowWS->state == true && windowWS->Auto) {
+                cmdWindow(false, 2);
+                windowWS->Auto = true;
+            }
 
-        // 灯光自动模式
-        if (rgbDin->Auto == false && ((light < 800 && rgbDin->state == false) || (light >= 800 && rgbDin->state == true))) {
-            // 当灯光状态与室外亮度一致时，设置灯光为自动模式
-            rgbDin->Auto = true;
-        } else if (light >= 800 && rgbDin->state == false && rgbDin->Auto) {
-            cmdRGB(true, 1);
-            rgbDin->Auto = true;
-        } else if (light < 800 && rgbDin->state == true && rgbDin->Auto) {
-            cmdRGB(false, 1);
-            rgbDin->Auto = true;
-        }
-        if (rgbMainBed->Auto == false && ((light < 800 && rgbMainBed->state == false) || (light >= 800 && rgbMainBed->state == true))) {
-            // 当灯光状态与室外亮度一致时，设置灯光为自动模式
-            rgbMainBed->Auto = true;
-        } else if (light >= 800 && rgbMainBed->state == false && rgbMainBed->Auto) {
-            cmdRGB(true, 2);
-            rgbMainBed->Auto = true;
-        } else if (light < 800 && rgbMainBed->state == true && rgbMainBed->Auto) {
-            cmdRGB(false, 2);
-            rgbMainBed->Auto = true;
-        }
-        if (rgbSubBed->Auto == false && ((light < 800 && rgbSubBed->state == false) || (light >= 800 && rgbSubBed->state == true))) {
-            // 当灯光状态与室外亮度一致时，设置灯光为自动模式
-            rgbSubBed->Auto = true;
-        } else if (light >= 800 && rgbSubBed->state == false && rgbSubBed->Auto) {
-            cmdRGB(true, 3);
-            rgbSubBed->Auto = true;
-        } else if (light < 800 && rgbSubBed->state == true && rgbSubBed->Auto) {
-            cmdRGB(false, 3);
-            rgbSubBed->Auto = true;
-        }
-        if (rgbWash->Auto == false && ((light < 800 && rgbWash->state == false) || (light >= 800 && rgbWash->state == true))) {
-            // 当灯光状态与室外亮度一致时，设置灯光为自动模式
-            rgbWash->Auto = true;
-        } else if (light >= 800 && rgbWash->state == false && rgbWash->Auto) {
-            cmdRGB(true, 4);
-            rgbWash->Auto = true;
-        } else if (light < 800 && rgbWash->state == true && rgbWash->Auto) {
-            cmdRGB(false, 4);
-            rgbWash->Auto = true;
+            // 灯光自动模式
+            if (rgbDin->Auto == false && ((light < 800 && rgbDin->state == false) || (light >= 800 && rgbDin->state == true))) {
+                // 当灯光状态与室外亮度一致时，设置灯光为自动模式
+                rgbDin->Auto = true;
+            } else if (light >= 800 && rgbDin->state == false && rgbDin->Auto) {
+                cmdRGB(true, 1);
+                rgbDin->Auto = true;
+            } else if (light < 800 && rgbDin->state == true && rgbDin->Auto) {
+                cmdRGB(false, 1);
+                rgbDin->Auto = true;
+            }
+            if (rgbMainBed->Auto == false && ((light < 800 && rgbMainBed->state == false) || (light >= 800 && rgbMainBed->state == true))) {
+                // 当灯光状态与室外亮度一致时，设置灯光为自动模式
+                rgbMainBed->Auto = true;
+            } else if (light >= 800 && rgbMainBed->state == false && rgbMainBed->Auto) {
+                cmdRGB(true, 2);
+                rgbMainBed->Auto = true;
+            } else if (light < 800 && rgbMainBed->state == true && rgbMainBed->Auto) {
+                cmdRGB(false, 2);
+                rgbMainBed->Auto = true;
+            }
+            if (rgbSubBed->Auto == false && ((light < 800 && rgbSubBed->state == false) || (light >= 800 && rgbSubBed->state == true))) {
+                // 当灯光状态与室外亮度一致时，设置灯光为自动模式
+                rgbSubBed->Auto = true;
+            } else if (light >= 800 && rgbSubBed->state == false && rgbSubBed->Auto) {
+                cmdRGB(true, 3);
+                rgbSubBed->Auto = true;
+            } else if (light < 800 && rgbSubBed->state == true && rgbSubBed->Auto) {
+                cmdRGB(false, 3);
+                rgbSubBed->Auto = true;
+            }
+            if (rgbWash->Auto == false && ((light < 800 && rgbWash->state == false) || (light >= 800 && rgbWash->state == true))) {
+                // 当灯光状态与室外亮度一致时，设置灯光为自动模式
+                rgbWash->Auto = true;
+            } else if (light >= 800 && rgbWash->state == false && rgbWash->Auto) {
+                cmdRGB(true, 4);
+                rgbWash->Auto = true;
+            } else if (light < 800 && rgbWash->state == true && rgbWash->Auto) {
+                cmdRGB(false, 4);
+                rgbWash->Auto = true;
+            }
         }
 
         // OLED默认显示模式，温湿度+一条信息

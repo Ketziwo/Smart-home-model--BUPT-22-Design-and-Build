@@ -23,7 +23,7 @@ private:
 
 class Fan {
 public:
-    bool Auto;
+    bool Auto = true;
     bool state;
     Fan(const unsigned int);
     void open();

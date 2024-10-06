@@ -12,7 +12,7 @@ public:
     Infrared();
     char get();
 private:
-    IRrecv *irrecv;
+    static IRrecv irrecv;
     decode_results results;
 };
 

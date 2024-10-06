@@ -4,16 +4,17 @@
 #include "Infrared.h"
 #include <Arduino.h>
 
+IRrecv Infrared::irrecv(RECV_PIN);
+
 Infrared::Infrared() {
-    irrecv = new IRrecv(RECV_PIN);
-    irrecv->enableIRIn(); // 启动红外接收
+    irrecv.enableIRIn(); // 启动红外接收
 }
 
 char Infrared::get() {
     char x = ' ';
-    if(irrecv->decode(&results)) {
+    if(irrecv.decode(&results)) {
         // 解码红外遥控信号
-        // Serial.println(results.value);
+        Serial.println(results.value);
         switch(results.value) {
             case 0xFF9867:
                 x = '0';
@@ -67,7 +68,7 @@ char Infrared::get() {
                 x = 'r';
                 break;
         }
-        irrecv->resume();   // 开始读取下一条信息
+        irrecv.resume();   // 开始读取下一条信息
         // Serial.println(x);
     }
     return x;

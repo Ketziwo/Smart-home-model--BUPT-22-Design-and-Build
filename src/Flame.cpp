@@ -14,5 +14,5 @@ void flameInit() {
 
 int getFlame() {
     // 读取火焰传感器的值
-    return digitalRead(flamePin);
+    return !digitalRead(flamePin);
 }
